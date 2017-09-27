@@ -1,0 +1,81 @@
+.category{
+	text-align: center;
+	padding: 0px;
+	padding-top: -5px;
+}
+/*img{
+	max-width: 100%;
+    height: auto;
+}*/
+.grid_product{
+	border-radius: 5px;
+    border: 1px solid #f1f1f1;
+    position: relative;
+    height:220px;
+    padding:5px;
+}
+div.grid_product>div{
+	text-align: center;
+}
+.padding{
+	padding:5px;
+	align-items: center;
+  	justify-content: center;
+}
+.loginFrm{
+	height:100%;
+	width:100%;
+}
+
+.dropdown{
+	position: relative;
+    display: inline-block;
+}
+.nav-shopcart{
+	padding:15px;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.dropdown:hover{
+	background-color: #e7e7e7;
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.product_photo{
+	width:128px;
+	height:128px;
+	align-items: center;
+  	justify-content: center;
+	margin: 0 auto;
+}
+.product_photo>img{
+	margin-left: auto;
+	margin-right: auto;
+}
+.img-responsive{
+	margin: 0 auto;
+}
+.shopCartElement {
+
+	border: 1px solid #f1f1f1;
+	margin-top:5px;
+}
+.noMargin{
+	margin-left:0px !important;
+	margin-right:0px !important;
+}
+.shopCartHeader{
+	display: flex;
+	justify-content: space-between;
+}
+input[name=currQuality] {    
+	width: 25px;
+}  
