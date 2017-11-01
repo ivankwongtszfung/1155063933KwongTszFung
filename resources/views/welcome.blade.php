@@ -51,16 +51,16 @@
                 <div class="form-group noMargin">
                   <div class="shopCartHeader noMargin row">
                       <div class="shopCartHeader ">Shopping List</div>
-                      <div class="shopCartHeader right">(Total:${{ getTotal() }}.00)</div>
+                      <div class="shopCartHeader right">(Total:$<% getTotal() %>.00)</div>
 
                   </div>
                   <div ng-repeat="data in shopCartModel.data track by $index">
                     <div class="shopCartElement noMargin row">
-                      <div class="shopCartElement_name col-md-6">{{data.Name}}</div>
+                      <div class="shopCartElement_name col-md-6"><%data.Name%></div>
                       <div class="shopCartElement_quatity col-md-3">
-                        <input type="text" name="currQuality" ng-model="data.currQuality">
+                        <input type="text" name="currQuality" ng-model="data.currQuality" ng-change="change()">
                       </div>
-                      <div class="shopCartElement_price col-md-3">@{{data.SellingPrice}}</div>
+                      <div class="shopCartElement_price col-md-3">@<%data.SellingPrice%></div>
                     </div>
                   </div>
                 </div>
@@ -89,7 +89,7 @@
           <a href="#home" class=""><span class="fa fa-home solo">Home</span></a>
         </li>
         <li ng-repeat="cat in category" class="category_list">
-         <a href="" data-scroll="" class=""><span class="id hidden">{{cat.Catid}}</span><span class="fa fa-anchor solo">{{cat.Catname}}</span></a>
+         <a href="" data-scroll="" class=""><span class="id hidden"><%cat.Catid%></span><span class="fa fa-anchor solo"><%cat.Catname%></span></a>
        </li>
     </ul>
   </div>
@@ -98,17 +98,17 @@
       <strong>Error!</strong> data can not load successfully.
     </div>
       <div ng-repeat="data in dataset|limitTo:10" class="col-sm-4 col-md-3 col-xs-4 grid_product">
-        <div id="product-{{data.Pid}}" class="hidden">
-          {{data.Pid}}
+        <div id="product-<%data.Pid%>" class="hidden">
+          <%data.Pid%>
         </div>
         <div class="padding">
           <div class="product_photo">
-            <img class="img-responsive" ng-src="img/{{data.Pid}}_{{data.Catid}}_{{data.Name}}.png">
+            <img class="img-responsive" ng-src="img/<%data.Pid%>_<%data.Catid%>_<%data.Name%>.png">
           </div>
           <div class="name">
-            <a ng-href="/product?Pid={{data.Pid}}" data-ajax="false" data-link="/Product-ARROWHEAD-MILLS/ORGANIC-SPLIT-GREEN-PEAS/p/BP_426705">{{data.Name}}</a>
+            <a ng-href="/product?Pid=<%data.Pid%>" data-ajax="false" data-link="/Product-ARROWHEAD-MILLS/ORGANIC-SPLIT-GREEN-PEAS/p/BP_426705"><%data.Name%></a>
           </div>
-          <div class="price">${{data.SellingPrice}}</div>
+          <div class="price">$<%data.SellingPrice%></div>
           <div class="add_cart">
             <button ng-click="addToCart(data)">add to cart</button>
           </div>

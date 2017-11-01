@@ -15,7 +15,10 @@ $( document ).ready(function(){
 });
 
 
-var app = angular.module("myApp",[]);
+var app = angular.module("myApp",[], function($interpolateProvider) {
+        $interpolateProvider.startSymbol('<%');
+        $interpolateProvider.endSymbol('%>');
+    });
 
 
 app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$location){
@@ -25,17 +28,45 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
     data : []
   };
   $web =  $location.search();
-  console.log($web);
+
   $http.post("api/productList").then(function success(response){
-    console.log(response['data']);
+    //load data in scope dataset to list product
+
     $scope.dataset=response['data']['content'];
+    //check session storage, load session data
+    if(typeof(Storage) !== "undefined") {
+      storedNames = JSON.parse(sessionStorage.getItem("shopItem"));
+      console.log(storedNames);
+      var data;
+     //this is a parse function to releated array key to pid
+     //since the listed products are not having a sequence of pid
+      var parse = [];
+      angular.forEach(response['data']['content'], function(value, key) {
+      	this.push(value.Pid);
+      }, parse);
+      console.log(parse)
+ 	//load session data into shopcart
+      $.each(storedNames, function( index, value ) {
+        if(value){
+          data=response['data']['content'][parse.indexOf(index)];
+          data['currQuality']=value;
+          $scope.shopCartModel.data = $scope.shopCartModel.data.concat(data);
+
+        }
+        //
+
+      }); 
+      
+      //
+    } else {
+        console.log("no session sorry");
+    }
   },function error(response){
     $scope.dataset="";
     $('.alert').removeClass('hidden');
   });
 
   $http.post("api/categoryList").then(function success(response){
-    console.log(response['data']);
     $scope.category=response['data']['content'];
   },function error(response){
     $scope.category="";
@@ -44,17 +75,62 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
   $scope.search=function(){
   	return 1;
   }
+
+
+
+  $scope.change = function() {
+    console.log(this)
+    if(typeof(Storage) !== "undefined") {
+        storedNames = JSON.parse(sessionStorage.getItem("shopItem"));
+        //checking the product is saved or not
+        if (this.data.currQuality>0) {
+            console.log('session is here')
+            storedNames[this.data.Pid] = this.data.currQuality;
+        }
+        else{
+            storedNames[this.data.Pid]=null;
+            console.log(this.data.Pid)
+            console.log(storedNames);
+            $scope.shopCartModel.data.splice(this.$index, 1);
+
+        }
+        
+        sessionStorage.setItem("shopItem", JSON.stringify(storedNames));
+    } else {
+        console.log("no session sorry");
+    }
+
+
+  };
+
+
   $scope.addToCart=function(data){
-  	if(shopItem[data.Pid] != null){
-  		shopItem[data.Pid]+=1;
-  	}
-  	else{
-  		shopItem[data.Pid]=1;
-  		$scope.shopCartModel.data = $scope.shopCartModel.data.concat(data);
-  	}
-  	$scope.total+=data.SellingPrice;
-  	data.currQuality=shopItem[data.Pid];
-  	
+    var formattedData;
+    console.log(data.Pid)
+    if(typeof(Storage) !== "undefined") {
+        storedNames = JSON.parse(sessionStorage.getItem("shopItem"));
+        //array initialisation
+        if(!storedNames){
+          storedNames=[];
+        }
+        //checking the product is saved or not
+        if (storedNames && storedNames[data.Pid]) {
+            console.log('session is here')
+            console.log(data)
+            storedNames[data.Pid] += 1;
+            data.currQuality=storedNames[data.Pid]
+        } else {
+            console.log('initialization')
+            storedNames[data.Pid]=1;
+            data.currQuality=1;          
+            $scope.shopCartModel.data = $scope.shopCartModel.data.concat(data);
+        }
+        //updateCart(data.Pid);
+        sessionStorage.setItem("shopItem", JSON.stringify(storedNames));
+    } else {
+        console.log("no session sorry");
+    }
+    
   	
   }
 
@@ -80,12 +156,10 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
       userCategory+=categoryTag.text();
       $(".user_category").text(category+userCategory);
       key=parseInt(id);
-      console.log(id);
       var data = {
         "Catid":id
       }
       $http.post("api/getProductByCatid",data).then(function success(response){
-        console.log(response['data']);
         $scope.dataset=response['data']['content'];
       },function error(response){
         $scope.dataset="";

@@ -1,3 +1,4 @@
+
 var key=0;
 var shopItem=[];
 $( document ).ready(function(){
@@ -15,7 +16,10 @@ $( document ).ready(function(){
 });
 
 
-var app = angular.module("myApp",[]);
+var app = angular.module("myApp",[], function($interpolateProvider) {
+        $interpolateProvider.startSymbol('<%');
+        $interpolateProvider.endSymbol('%>');
+    });
 
 
 app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$location){
