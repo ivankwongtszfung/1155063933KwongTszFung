@@ -11,6 +11,11 @@ class Category extends Model
     protected $fillable = [
         'Catname'
     ];
+
+    public function Product(){
+      return $this->hasOne('App\Product','Catid','Catid');
+    }
+
     public function getCategory(){
 
         return $this->all();

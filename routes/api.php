@@ -23,6 +23,8 @@ Route::post('getProductByCatid', 'ProductController@getProductByCatid');
 Route::post('getProductByPid', 'ProductController@getProductByPid');
 Route::post('updateProduct', 'ProductController@updateProduct');
 Route::post('deleteProduct', 'ProductController@deleteProduct');
+Route::post('submitProduct', 'ProductController@submitProduct');
+
 
 Route::post('createCategory', 'CategoryController@create');
 Route::post('categoryList', 'CategoryController@getCategory');

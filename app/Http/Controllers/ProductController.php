@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Response;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 use Validator;
+
 
 class ProductController extends Controller
 {
@@ -27,9 +30,20 @@ class ProductController extends Controller
 
             $product = new Product();
 
+        
+            $data['Catid']=substr($data['Catid'],7);
+
             $productId=$product->createProduct($data);
 
-            //Log::info($orderId);
+            if($request->hasFile('image')){
+
+                $request->file('image');
+    
+                $request->image->storeAs(
+                    'images', $productId."_".$data['Catid']."_".$data['Name']
+                );
+
+            }
 
             DB::commit();
         }
@@ -120,6 +134,15 @@ class ProductController extends Controller
             'status' => 'Success',
             'content' => $result
             ],200);
+    }
+
+    public function submitProduct(Request $request){
+        $product= new Product();
+
+         $data = $request->all();
+
+         $result=$product->saveProduct($data);
+
     }
 
 

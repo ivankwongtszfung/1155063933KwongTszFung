@@ -50,16 +50,22 @@ class Product extends Model
     "Pid"  =>  "required"
     ];
 
+    public function Category()
+    {
+        return $this->belongsTo('App\Category','Catid','Catid');
+        
+    } 
+
     public function getProduct(){
     	return $this->all();
     }
 
     public function getProductByCatid($data){
-    	return $this->where('Catid',$data['Catid'])->get();
+    	return $this->with('Category')->where('Catid',$data['Catid'])->get();
     }
 
     public function getProductByPid($data){
-    	return $this->where('Pid',$data['Pid'])->get();
+    	return $this->with('Category')->where('Pid',$data['Pid'])->get();
     }
 
     public function createProduct($data){
@@ -99,6 +105,7 @@ class Product extends Model
         $status=$this->where('Pid', $id)->delete();
         return $status;
     }
+
 
 
 }

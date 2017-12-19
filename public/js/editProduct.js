@@ -1,21 +1,8 @@
 var key=0;
 var shopItem=[];
-$( document ).ready(function(){
- //    var category="category";
-	// $(".user_category").text(category);
-	// $("div.category").on("click",".category_list",function(){
-	// 	var userCategory=">";
-	// 	var categoryTag=$(this).find("span.solo").contents();
-	// 	var id=$(this).find("span.id").contents();
-	// 	id= id.text();
-	// 	userCategory+=categoryTag.text();
-	// 	$(".user_category").text(category+userCategory);
-	// 	key=parseInt(id);
-	// });
-});
 
 
-var app = angular.module("myApp",[], function($interpolateProvider) {
+var app = angular.module("myApp",['ngMessages'], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
     });
@@ -45,7 +32,7 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
   $http.post("http://13.59.52.101/api/getProductByPid",data).then(function success(response){
     console.log(response['data']);
     $scope.dataset=response["data"]["content"][0];
-
+    $scope.myData=response["data"]["content"][0];
   },function error(response){
     $scope.dataset="";
     $('.alert').removeClass('hidden');
@@ -84,6 +71,21 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
     }
     return total;
   }
+
+    $scope.submitMyForm=function(){
+        /* while compiling form , angular created this object*/
+        var data=$scope.myData;
+        console.log(data);  
+        /* post to server*/
+        $http.post("http://13.59.52.101/api/createProduct",data).then(function success(response){
+          console.log(response['data']);
+          alert("create success");
+          location.href="http://13.59.52.101/adminPanel/";
+        },function error(response){
+          $scope.dataset="";
+          $('.alert').removeClass('hidden');
+        });      
+    }
 
 
 

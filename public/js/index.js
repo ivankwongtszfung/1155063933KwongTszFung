@@ -143,7 +143,7 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
     return total;
   }
 
-
+  
 
   $(function(){
     var category="category";
@@ -165,12 +165,24 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
         $scope.dataset="";
         $('.alert').removeClass('hidden');
       });
+
     });
 
+    $("div.category").on("click",".origin",function(){
+        $(".user_category").text("category");
+        $http.post("api/productList").then(function success(response){
+          $scope.dataset=response['data']['content'];
+        },function error(response){
+          $scope.dataset="";
+          $('.alert').removeClass('hidden');
+        });
 
-
+    });
 
 
   });
 
 }]);
+
+
+

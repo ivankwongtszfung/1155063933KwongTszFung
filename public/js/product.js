@@ -43,9 +43,9 @@ app.controller('ctrl',['$scope','$http','$location',function($scope,$http,$locat
     "Pid" : searchObject
   }
   $http.post("http://13.59.52.101/api/getProductByPid",data).then(function success(response){
-    console.log(response["data"]);
     $scope.dataset=response["data"]['content'];
-    var category="category>category"+response["data"][searchObject]["Catid"]+">"+response["data"][searchObject]["Name"];
+    var data = response["data"]['content'][0];
+    var category="category>category"+data.category.Catid+">"+data.Name;
     $(".user_category").text(category)
     console.log(category);
   },function error(response){
